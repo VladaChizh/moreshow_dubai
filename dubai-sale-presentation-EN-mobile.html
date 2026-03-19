@@ -1,0 +1,2015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MORE SHOW Dubai — Business for Sale</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --blue: #0033A1;
+    --deep-blue: #001a6e;
+    --gold: #EBB550;
+    --white: #FFFFFF;
+    --card-blue: #0a3d9e;
+    --card-blue-dark: #082f7a;
+  }
+
+  html, body {
+    width: 100%; height: 100%;
+    overflow: hidden;
+    font-family: 'Montserrat', sans-serif;
+    background: var(--deep-blue);
+    color: var(--white);
+  }
+
+  /* ───── SLIDESHOW ───── */
+  .slideshow {
+    width: 100vw; height: 100vh;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    width: 100%; height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(135deg, var(--deep-blue) 0%, var(--blue) 100%);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .slide.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  /* ───── WAVE BG DECORATION ───── */
+  .wave-bg {
+    position: absolute;
+    bottom: -30px; left: 0;
+    width: 100%; height: 300px;
+    opacity: 0.07;
+    pointer-events: none;
+  }
+  .wave-brand-decor {
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 100%; height: 120px;
+    object-fit: cover;
+    object-position: top;
+    opacity: 0.12;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .wave-bg-top {
+    position: absolute;
+    top: -30px; right: -60px;
+    width: 500px; height: 250px;
+    opacity: 0.06;
+    pointer-events: none;
+    transform: rotate(15deg);
+  }
+
+  /* ───── NAVIGATION ───── */
+  .nav-btn {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    background: rgba(235,181,80,0.2);
+    border: 2px solid var(--gold);
+    color: var(--gold);
+    font-size: 22px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 100;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .nav-btn:hover {
+    background: rgba(235,181,80,0.45);
+    transform: translateY(-50%) scale(1.1);
+  }
+  #btn-prev { left: 18px; }
+  #btn-next { right: 18px; }
+
+  .slide-counter {
+    position: fixed;
+    bottom: 22px; left: 50%;
+    transform: translateX(-50%);
+    font-size: 13px; font-weight: 600;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 2px;
+    z-index: 100;
+  }
+
+  /* ───── DOTS NAVIGATION (mobile only, hidden on desktop) ───── */
+  .dots-nav {
+    display: none;
+  }
+
+  /* ───── BRANDING WATERMARK ───── */
+  .brand-mark {
+    position: absolute;
+    bottom: 18px; right: 24px;
+    display: flex; align-items: center;
+    opacity: 0.75;
+    z-index: 10;
+  }
+  .brand-mark img {
+    height: 28px;
+    width: auto;
+    filter: brightness(0) invert(1);
+  }
+
+  /* ───── SHARED LAYOUT ───── */
+  .slide-inner {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    width: 100%; height: 100%;
+    padding: 48px 80px 60px;
+  }
+
+  .slide-title {
+    font-size: 13px; font-weight: 700;
+    letter-spacing: 5px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .slide-heading {
+    font-size: 34px; font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--white);
+    line-height: 1.1;
+    margin-bottom: 6px;
+  }
+  .slide-subtitle {
+    font-size: 15px; font-weight: 400;
+    color: rgba(255,255,255,0.75);
+    margin-bottom: 28px;
+    max-width: 700px;
+  }
+
+  /* ───── CARDS ───── */
+  .card {
+    background: var(--card-blue);
+    border-radius: 12px;
+    padding: 16px 20px;
+    color: var(--white);
+  }
+  .card-gold-border {
+    background: var(--card-blue);
+    border-radius: 12px;
+    padding: 20px 24px;
+    border: 2px solid var(--gold);
+  }
+  .card-num {
+    font-size: 26px; font-weight: 800;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .card-label {
+    font-size: 11px; font-weight: 600;
+    color: rgba(255,255,255,0.65);
+    letter-spacing: 1px;
+    margin-top: 4px;
+  }
+
+  /* ───── DIVIDER ───── */
+  .gold-line {
+    width: 60px; height: 3px;
+    background: var(--gold);
+    border-radius: 2px;
+    margin-bottom: 24px;
+  }
+
+  /* ══════════════════════════════════════
+     SLIDE 1 — COVER
+  ══════════════════════════════════════ */
+  #slide-1 {
+    background: linear-gradient(145deg, #000e40 0%, #001a6e 40%, #0033A1 100%);
+  }
+  #slide-1 .cover-center {
+    position: relative; z-index: 3;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    flex: 1;
+    text-align: center;
+  }
+  #slide-1 .cover-wave-icon {
+    width: 110px; height: 55px;
+    margin-bottom: 14px;
+    filter: drop-shadow(0 0 20px rgba(235,181,80,0.4));
+  }
+  #slide-1 .cover-logo {
+    font-size: 52px; font-weight: 800;
+    letter-spacing: 10px;
+    color: var(--white);
+    text-transform: uppercase;
+    line-height: 1;
+    text-shadow: 0 4px 30px rgba(0,0,0,0.4);
+    margin-bottom: 8px;
+  }
+  #slide-1 .cover-dubai {
+    font-size: 72px; font-weight: 800;
+    letter-spacing: 14px;
+    color: var(--gold);
+    text-transform: uppercase;
+    line-height: 1;
+    text-shadow: 0 0 60px rgba(235,181,80,0.5), 0 4px 20px rgba(0,0,0,0.3);
+    margin-bottom: 24px;
+  }
+  #slide-1 .cover-subtitle {
+    font-size: 18px; font-weight: 400;
+    color: rgba(255,255,255,0.8);
+    letter-spacing: 1px;
+    max-width: 500px;
+  }
+  #slide-1 .cover-url {
+    position: absolute;
+    bottom: 30px; right: 40px;
+    font-size: 13px; font-weight: 600;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 2px;
+    z-index: 5;
+  }
+  #slide-1 .wave-bg-cover {
+    position: absolute;
+    width: 100%; height: 100%;
+    top: 0; left: 0;
+    opacity: 0.08;
+    pointer-events: none;
+  }
+
+  /* ══════════════════════════════════════
+     SLIDE 2 — ABOUT
+  ══════════════════════════════════════ */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    flex: 1;
+    align-content: start;
+  }
+
+  /* ══════════════════════════════════════
+     SLIDE 3 — SERVICES
+  ══════════════════════════════════════ */
+  .services-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    flex: 1;
+  }
+  .service-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 14px;
+    background: var(--card-blue);
+    border-radius: 10px;
+    font-size: 14px; font-weight: 600;
+    margin-bottom: 8px;
+    border-left: 3px solid var(--gold);
+  }
+  .services-tag {
+    text-align: center;
+    padding: 12px 20px;
+    background: rgba(235,181,80,0.15);
+    border-radius: 8px;
+    font-size: 13px; font-weight: 600;
+    color: var(--gold);
+    letter-spacing: 1px;
+    margin-top: 12px;
+  }
+
+  /* ══════════════════════════════════════
+     SLIDE 4 — MARKET
+  ══════════════════════════════════════ */
+  .market-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 16px;
+    flex: 1;
+  }
+  .market-card {
+    background: var(--card-blue);
+    border-radius: 14px;
+    padding: 24px 28px;
+    display: flex; align-items: center;
+    font-size: 16px; font-weight: 600;
+    line-height: 1.5;
+    border-top: 3px solid var(--gold);
+    position: relative;
+  }
+  .market-num {
+    position: absolute;
+    top: 16px; right: 20px;
+    font-size: 42px; font-weight: 800;
+    color: rgba(235,181,80,0.15);
+    line-height: 1;
+  }
+
+  /* ══════════════════════════════════════
+     SLIDE 5 — ASSETS
+  ══════════════════════════════════════ */
+  .assets-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    flex: 1;
+    align-content: start;
+  }
+  .asset-card {
+    background: var(--card-blue);
+    border-radius: 12px;
+    padding: 20px 16px;
+    display: flex; flex-direction: column;
+    align-items: center; text-align: center;
+    gap: 10px;
+  }
+  .asset-icon {
+    font-size: 32px;
+  }
+  .asset-text {
+    font-size: 13px; font-weight: 600;
+    line-height: 1.4;
+  }
+  .asset-card.wide {
+    grid-column: span 2;
+    flex-direction: row;
+    text-align: left;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .asset-card.wide .asset-icon {
+    font-size: 30px;
+    flex-shrink: 0;
+  }
+
+  /* ══════════════════════════════════════
+     SLIDE 6 — DIGITAL ASSETS
+  ══════════════════════════════════════ */
+  .key-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .key-card {
+    background: var(--card-blue-dark);
+    border: 2px solid var(--gold);
+    border-radius: 14px;
+    padding: 22px 24px;
+  }
+  .key-card-title {
+    font-size: 15px; font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 8px;
+    display: flex; align-items: flex-start; gap: 10px;
+  }
+  .key-card-desc {
+    font-size: 13px; color: rgba(255,255,255,0.7);
+    line-height: 1.5;
+    padding-left: 26px;
+  }
+  .digital-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+  .digital-card {
+    background: var(--card-blue);
+    border-radius: 10px;
+    padding: 14px 16px;
+    font-size: 13px; font-weight: 600;
+    line-height: 1.4;
+    text-align: center;
+  }
+
+  /* ══════════════════════════════════════
+     SLIDE 7 — TEAM
+  ══════════════════════════════════════ */
+  .team-columns {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 20px;
+    flex: 1;
+  }
+  .team-col-title {
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 3px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .team-list {
+    background: var(--card-blue);
+    border-radius: 12px;
+    padding: 18px 20px;
+    flex: 1;
+  }
+  .team-item {
+    font-size: 13px; font-weight: 600;
+    color: rgba(255,255,255,0.9);
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .team-item::before {
+    content: '';
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--gold);
+    flex-shrink: 0;
+  }
+  .team-item:last-child { border-bottom: none; }
+  .team-note {
+    background: rgba(235,181,80,0.12);
+    border: 1px solid rgba(235,181,80,0.4);
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-size: 13px; font-weight: 600;
+    color: rgba(255,255,255,0.85);
+    margin-top: 14px;
+    text-align: center;
+  }
+
+  /* ══════════════════════════════════════
+     SLIDE 8 — FINANCIALS
+  ══════════════════════════════════════ */
+  .finance-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 6px;
+    margin-bottom: 18px;
+  }
+  .finance-table th {
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--gold);
+    text-align: left;
+    padding: 8px 20px;
+    text-transform: uppercase;
+  }
+  .finance-table td {
+    background: var(--card-blue);
+    padding: 16px 20px;
+    font-size: 15px; font-weight: 600;
+    color: var(--white);
+  }
+  .finance-table tr td:first-child {
+    border-radius: 10px 0 0 10px;
+    font-weight: 700;
+    color: var(--gold);
+    font-size: 16px;
+  }
+  .finance-table tr td:last-child {
+    border-radius: 0 10px 10px 0;
+    font-weight: 700;
+    font-size: 16px;
+  }
+  .profit-pos { color: #4ade80; }
+  .profit-neg { color: #f87171; }
+  .finance-comment {
+    background: var(--card-blue-dark);
+    border-left: 4px solid var(--gold);
+    border-radius: 0 12px 12px 0;
+    padding: 16px 22px;
+    font-size: 13px; font-weight: 400;
+    color: rgba(255,255,255,0.8);
+    line-height: 1.6;
+  }
+
+  /* ══════════════════════════════════════
+     SLIDE 9 — GROWTH POTENTIAL
+  ══════════════════════════════════════ */
+  .potential-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+    flex: 1;
+  }
+  .potential-card {
+    background: var(--card-blue);
+    border-radius: 12px;
+    padding: 16px 22px;
+    display: flex; align-items: center; gap: 18px;
+  }
+  .potential-num {
+    font-size: 32px; font-weight: 800;
+    color: var(--gold);
+    line-height: 1;
+    min-width: 44px;
+  }
+  .potential-title {
+    font-size: 15px; font-weight: 700;
+    color: var(--white);
+    margin-bottom: 2px;
+  }
+  .potential-desc {
+    font-size: 12px; font-weight: 400;
+    color: rgba(255,255,255,0.6);
+  }
+
+  /* ══════════════════════════════════════
+     SLIDE 10 — WHAT'S INCLUDED
+  ══════════════════════════════════════ */
+  .deal-layout {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 30px;
+    flex: 1;
+    align-items: center;
+  }
+  .deal-list {
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .deal-item {
+    background: var(--card-blue);
+    border-radius: 10px;
+    padding: 12px 18px;
+    font-size: 14px; font-weight: 600;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .deal-item .check { font-size: 18px; }
+  .price-card {
+    background: var(--card-blue-dark);
+    border: 3px solid var(--gold);
+    border-radius: 18px;
+    padding: 36px 40px;
+    text-align: center;
+    min-width: 300px;
+    box-shadow: 0 0 60px rgba(235,181,80,0.2);
+  }
+  .price-label {
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 4px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .price-value {
+    font-size: 42px; font-weight: 800;
+    color: var(--white);
+    line-height: 1.1;
+    margin-bottom: 4px;
+  }
+  .price-currency {
+    font-size: 18px; font-weight: 600;
+    color: var(--gold);
+    margin-bottom: 18px;
+  }
+  .price-note {
+    font-size: 13px; font-weight: 400;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.5;
+  }
+
+  /* ══════════════════════════════════════
+     SLIDE 11 — CONTACTS
+  ══════════════════════════════════════ */
+  #slide-11 .contact-center {
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    flex: 1; text-align: center;
+    gap: 0;
+  }
+  #slide-11 .contact-wave {
+    width: 100px; height: 50px;
+    margin-bottom: 14px;
+    filter: drop-shadow(0 0 12px rgba(235,181,80,0.3));
+  }
+  #slide-11 .contact-logo {
+    font-size: 40px; font-weight: 800;
+    letter-spacing: 8px;
+    color: var(--white);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  #slide-11 .contact-dubai {
+    font-size: 28px; font-weight: 800;
+    letter-spacing: 8px;
+    color: var(--gold);
+    margin-bottom: 32px;
+  }
+  .contact-links {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 14px;
+  }
+  .contact-item {
+    background: var(--card-blue);
+    border-radius: 50px;
+    padding: 12px 32px;
+    font-size: 16px; font-weight: 600;
+    min-width: 320px;
+    letter-spacing: 0.5px;
+  }
+  .contact-item span {
+    color: var(--gold);
+    margin-right: 8px;
+    font-weight: 700;
+  }
+  #slide-11 .wave-bottom {
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 100%; height: 120px;
+    opacity: 0.1;
+  }
+
+  /* ══════════════════════════════════════
+     SLIDE GALLERY — OUR WORK
+  ══════════════════════════════════════ */
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 8px;
+    flex: 1;
+    min-height: 0;
+  }
+  .gallery-photo {
+    overflow: hidden;
+    border-radius: 10px;
+    position: relative;
+  }
+  .gallery-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .gallery-photo.tall {
+    grid-row: span 2;
+  }
+
+  /* ══════════════════════════════════════
+     SLIDE 6 — DIGITAL ASSETS (redesign)
+  ══════════════════════════════════════ */
+  .digital-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    flex: 1;
+    min-height: 0;
+  }
+  .digital-left {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .key-card-compact {
+    background: var(--card-blue-dark);
+    border: 2px solid var(--gold);
+    border-radius: 12px;
+    padding: 14px 18px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 13px;
+  }
+  .key-card-compact .kc-icon { font-size: 20px; flex-shrink: 0; }
+  .key-card-compact .kc-title {
+    font-size: 13px; font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 2px;
+  }
+  .key-card-compact .kc-desc {
+    font-size: 11px; color: rgba(255,255,255,0.6);
+    line-height: 1.4;
+  }
+  .asset-links {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+  }
+  .asset-link-item {
+    background: var(--card-blue);
+    border-radius: 10px;
+    padding: 12px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .asset-link-item .ali-label {
+    font-size: 11px; font-weight: 700;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .asset-link-item a {
+    font-size: 14px; font-weight: 700;
+    color: var(--gold);
+    text-decoration: none;
+    letter-spacing: 0.3px;
+  }
+  .asset-link-item a:hover { text-decoration: underline; }
+  .asset-link-item .ali-sub {
+    font-size: 11px; color: rgba(255,255,255,0.5);
+  }
+  .asset-link-plain {
+    background: var(--card-blue);
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 13px; font-weight: 600;
+    display: flex; align-items: center; gap: 10px;
+    color: rgba(255,255,255,0.9);
+  }
+
+  /* Instagram mockup */
+  .insta-mockup {
+    background: #fafafa;
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+  }
+  .insta-top-bar {
+    background: #fff;
+    border-bottom: 1px solid #dbdbdb;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px; font-weight: 700;
+    color: #262626;
+  }
+  .insta-top-bar svg { width: 18px; height: 18px; }
+  .insta-header {
+    background: #fff;
+    padding: 14px 16px 10px;
+    border-bottom: 1px solid #efefef;
+  }
+  .insta-profile-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 10px;
+  }
+  .insta-avatar {
+    width: 54px; height: 54px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 11px; font-weight: 800;
+    letter-spacing: 0.5px;
+    flex-shrink: 0;
+    padding: 2px;
+  }
+  .insta-avatar-inner {
+    width: 50px; height: 50px;
+    border-radius: 50%;
+    background: #fff;
+    display: flex; align-items: center; justify-content: center;
+    color: #0033A1; font-size: 9px; font-weight: 900;
+    letter-spacing: 0.3px;
+  }
+  .insta-stats-row {
+    display: flex;
+    gap: 16px;
+    flex: 1;
+  }
+  .insta-stat {
+    display: flex; flex-direction: column;
+    align-items: center;
+    font-size: 11px; color: #262626;
+  }
+  .insta-stat strong { font-size: 13px; font-weight: 700; }
+  .insta-stat span { font-size: 10px; color: #737373; }
+  .insta-username-block { margin-bottom: 4px; }
+  .insta-username { font-size: 12px; font-weight: 700; color: #262626; }
+  .insta-bio-text { font-size: 10px; color: #262626; line-height: 1.4; }
+  .insta-bio-link { font-size: 10px; color: #00376b; }
+  .insta-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    flex: 1;
+    background: #efefef;
+    overflow: hidden;
+  }
+  .insta-cell {
+    aspect-ratio: 1;
+    overflow: hidden;
+    background: #dbdbdb;
+  }
+  .insta-cell img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  /* ══════════════════════════════════════
+     SLIDE 8 — FULL FINANCE TABLE
+  ══════════════════════════════════════ */
+  .finance-full-wrap {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .fft {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 9.5px;
+    color: #111;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .fft .fft-year td {
+    background: #0033A1;
+    color: #fff;
+    font-weight: 800;
+    text-align: center;
+    padding: 5px 4px;
+    font-size: 11px;
+    letter-spacing: 3px;
+  }
+  .fft .fft-months td {
+    background: #dce6f8;
+    color: #0033A1;
+    font-weight: 700;
+    text-align: center;
+    padding: 5px 3px;
+    border: 1px solid #c5d3ee;
+    font-size: 9px;
+  }
+  .fft td { border: 1px solid #e4eaf5; padding: 6px 5px; text-align: right; }
+  .fft .fft-label {
+    text-align: left;
+    font-weight: 700;
+    font-size: 9px;
+    color: #0033A1;
+    background: #f0f4ff;
+    padding: 6px 8px;
+    white-space: nowrap;
+    min-width: 80px;
+  }
+  .fft .fft-rev td { background: #fff; }
+  .fft .fft-exp td { background: #fff5f5; }
+  .fft .fft-pnl td { background: #f5fff7; }
+  .fft .fft-total { font-weight: 800 !important; background: #e8eeff !important; }
+  .fft .neg { color: #c62828; font-weight: 700; }
+  .fft .pos { color: #2e7d32; }
+
+  /* ══════════════════════════════════════
+     MOBILE RESPONSIVE — max-width: 768px
+  ══════════════════════════════════════ */
+  @media (max-width: 768px) {
+
+    /* Keep slideshow structure, each slide scrolls internally */
+    html, body {
+      overflow: hidden;
+    }
+
+    .slideshow {
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .slide {
+      overflow-y: auto;
+      overflow-x: hidden;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* Slide inner padding */
+    .slide-inner {
+      padding: 24px 20px 80px;
+      height: auto;
+      min-height: 100%;
+    }
+
+    /* Typography scale-down */
+    .slide-heading {
+      font-size: 22px;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+    .slide-title {
+      font-size: 11px;
+      letter-spacing: 3px;
+      margin-bottom: 6px;
+    }
+    .slide-subtitle {
+      font-size: 13px;
+      margin-bottom: 16px;
+    }
+    .gold-line {
+      margin-bottom: 16px;
+    }
+
+    /* Cover slide */
+    #slide-1 .cover-logo {
+      font-size: 32px;
+      letter-spacing: 6px;
+    }
+    #slide-1 .cover-dubai {
+      font-size: 36px;
+      letter-spacing: 8px;
+      margin-bottom: 16px;
+    }
+    #slide-1 .cover-subtitle {
+      font-size: 14px;
+      padding: 0 16px;
+    }
+    #slide-1 .cover-url {
+      font-size: 11px;
+      bottom: 20px; right: 16px;
+    }
+    #slide-1 .cover-center img {
+      height: 60px !important;
+      margin-bottom: 14px !important;
+    }
+
+    /* Stats grid: 2 columns */
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+    .card-num {
+      font-size: 20px;
+    }
+    .card {
+      padding: 12px 14px;
+    }
+
+    /* Stats card about block */
+    .slide #slide-2 div[style*="font-size:18px"],
+    div[style*="font-size:18px;font-weight:700"] {
+      font-size: 15px !important;
+    }
+
+    /* Services: 1 column */
+    .services-columns {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+    .service-item {
+      font-size: 13px;
+      padding: 8px 12px;
+      margin-bottom: 6px;
+    }
+    .services-tag {
+      font-size: 11px;
+      padding: 10px 14px;
+    }
+
+    /* Market grid: 1 column */
+    .market-grid {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto;
+      gap: 10px;
+    }
+    .market-card {
+      padding: 16px 18px;
+      font-size: 14px;
+    }
+    .market-num {
+      font-size: 28px;
+    }
+
+    /* Assets grid: 2 columns */
+    .assets-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+    .asset-card.wide {
+      grid-column: span 2;
+    }
+    .asset-card {
+      padding: 14px 12px;
+    }
+    .asset-icon {
+      font-size: 24px;
+    }
+    .asset-text {
+      font-size: 12px;
+    }
+
+    /* Gallery: 2 columns, remove tall span */
+    .gallery-grid {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto;
+      gap: 6px;
+    }
+    .gallery-photo.tall {
+      grid-row: span 1;
+    }
+    .gallery-photo {
+      height: 150px;
+    }
+
+    /* Digital layout: 1 column */
+    .digital-layout {
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    /* Hide Instagram mockup on mobile */
+    .insta-mockup {
+      display: none;
+    }
+
+    /* Key cards: 1 column */
+    .key-cards {
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    /* Team: 1 column */
+    .team-columns {
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    .team-item {
+      font-size: 12px;
+    }
+
+    /* Finance table: horizontal scroll wrapper */
+    .finance-full-wrap {
+      overflow-x: auto;
+      overflow-y: auto;
+    }
+    .fft {
+      min-width: 500px;
+    }
+
+    /* Deal layout: 1 column */
+    .deal-layout {
+      grid-template-columns: 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+    .deal-item {
+      font-size: 13px;
+      padding: 10px 14px;
+    }
+    .price-card {
+      min-width: auto;
+      width: 100%;
+      padding: 24px 20px;
+    }
+    .price-value {
+      font-size: 32px;
+    }
+
+    /* Contact items */
+    .contact-item {
+      min-width: auto;
+      width: 100%;
+      font-size: 14px;
+      padding: 10px 20px;
+    }
+    #slide-11 .contact-logo {
+      font-size: 28px;
+      letter-spacing: 5px;
+    }
+    #slide-11 .contact-dubai {
+      font-size: 20px;
+      letter-spacing: 5px;
+      margin-bottom: 20px;
+    }
+
+    /* Nav buttons: smaller, closer to edges */
+    .nav-btn {
+      width: 40px; height: 40px;
+      font-size: 16px;
+    }
+    #btn-prev { left: 8px; }
+    #btn-next { right: 8px; }
+
+    /* Slide counter */
+    .slide-counter {
+      bottom: 14px;
+      font-size: 11px;
+    }
+
+    /* Dots nav: show on mobile */
+    .dots-nav {
+      display: flex;
+      position: fixed;
+      bottom: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      gap: 6px;
+      z-index: 101;
+      align-items: center;
+    }
+    .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.35);
+      transition: background 0.2s, transform 0.2s;
+      cursor: pointer;
+    }
+    .dot.active {
+      background: var(--gold);
+      transform: scale(1.4);
+    }
+
+    /* Hide text counter on mobile, show dots */
+    .slide-counter {
+      display: none;
+    }
+
+    /* Catalogs grid: 1 column on mobile */
+    div[style*="grid-template-columns:1fr 1fr"] {
+      grid-template-columns: 1fr !important;
+    }
+
+    /* Brand mark: smaller */
+    .brand-mark {
+      bottom: 48px;
+      right: 16px;
+    }
+    .brand-mark img {
+      height: 20px;
+    }
+
+    /* Market card font */
+    .market-card div[style*="font-size:16px"] {
+      font-size: 13px !important;
+    }
+
+    /* About company block */
+    div[style*="font-size:18px;font-weight:700;color:var(--white)"] {
+      font-size: 14px !important;
+    }
+    div[style*="font-size:14px;font-weight:400;color:rgba(255,255,255,0.75)"] {
+      font-size: 12px !important;
+    }
+
+    /* Potential cards */
+    .potential-card {
+      padding: 12px 16px;
+      gap: 12px;
+    }
+    .potential-num {
+      font-size: 24px;
+      min-width: 34px;
+    }
+    .potential-title {
+      font-size: 13px;
+    }
+    .potential-desc {
+      font-size: 11px;
+    }
+
+    /* Key card compact */
+    .key-card-compact {
+      padding: 12px 14px;
+    }
+
+    /* Finance slide inner padding */
+    #slide-8 .slide-inner {
+      padding: 20px 16px 70px;
+    }
+
+    /* Video slide */
+    #slide-video .slide-inner {
+      padding: 20px 16px 70px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="slideshow" id="slideshow">
+
+  <!-- ═══ SLIDE 1: COVER ═══ -->
+  <div class="slide active" id="slide-1">
+    <!-- Full background wave pattern -->
+    <svg class="wave-bg-cover" viewBox="0 0 1440 810" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,120 Q120,60 240,120 Q360,180 480,120 Q600,60 720,120 Q840,180 960,120 Q1080,60 1200,120 Q1320,180 1440,120" stroke="white" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <path d="M0,200 Q120,140 240,200 Q360,260 480,200 Q600,140 720,200 Q840,260 960,200 Q1080,140 1200,200 Q1320,260 1440,200" stroke="white" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <path d="M0,280 Q120,220 240,280 Q360,340 480,280 Q600,220 720,280 Q840,340 960,280 Q1080,220 1200,280 Q1320,340 1440,280" stroke="white" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <path d="M0,400 Q180,320 360,400 Q540,480 720,400 Q900,320 1080,400 Q1260,480 1440,400" stroke="white" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <path d="M0,480 Q180,400 360,480 Q540,560 720,480 Q900,400 1080,480 Q1260,560 1440,480" stroke="white" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <path d="M0,560 Q180,480 360,560 Q540,640 720,560 Q900,480 1080,560 Q1260,640 1440,560" stroke="white" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <path d="M0,650 Q240,570 480,650 Q720,730 960,650 Q1200,570 1440,650" stroke="white" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M0,720 Q240,640 480,720 Q720,800 960,720 Q1200,640 1440,720" stroke="white" stroke-width="3" fill="none" stroke-linecap="round"/>
+    </svg>
+
+    <div class="cover-center">
+      <img src="../dis/синий англ лого.png" style="height:90px;width:auto;filter:brightness(0) invert(1);margin-bottom:20px;drop-shadow:0 0 30px rgba(235,181,80,0.3);" alt="MORE SHOW">
+      <div class="cover-dubai">DUBAI</div>
+      <div class="cover-subtitle">A ready-to-go event business in the UAE — turnkey</div>
+    </div>
+
+    <div class="cover-url">moreshow.events</div>
+    <img class="wave-brand-decor" src="wave-blue.png" alt="">
+
+    <!-- bottom waves -->
+    <svg style="position:absolute;bottom:-20px;left:0;width:100%;height:200px;opacity:0.12;pointer-events:none;" viewBox="0 0 1440 200" preserveAspectRatio="none">
+      <path d="M0,80 Q360,0 720,80 Q1080,160 1440,80 L1440,200 L0,200 Z" fill="white"/>
+    </svg>
+  </div>
+
+  <!-- ═══ SLIDE 2: ABOUT THE COMPANY ═══ -->
+  <div class="slide" id="slide-2">
+    <svg class="wave-bg" viewBox="0 0 1440 300" preserveAspectRatio="none">
+      <path d="M0,80 Q360,0 720,80 Q1080,160 1440,80 L1440,300 L0,300 Z" fill="white"/>
+      <path d="M0,130 Q360,50 720,130 Q1080,210 1440,130 L1440,300 L0,300 Z" fill="white"/>
+    </svg>
+    <svg class="wave-bg-top" viewBox="0 0 120 60">
+      <path d="M5,15 Q20,5 35,15 Q50,25 65,15 Q80,5 95,15 Q110,25 120,15" stroke="white" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <path d="M5,30 Q20,20 35,30 Q50,40 65,30 Q80,20 95,30 Q110,40 120,30" stroke="white" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <path d="M5,45 Q20,35 35,45 Q50,55 65,45 Q80,35 95,45 Q110,55 120,45" stroke="white" stroke-width="4" fill="none" stroke-linecap="round"/>
+    </svg>
+
+    <div class="slide-inner">
+      <div class="slide-title">SLIDE 02</div>
+      <div class="slide-heading">About the Company</div>
+      <div class="gold-line"></div>
+
+      <div style="background:rgba(10,61,158,0.7);border-radius:14px;padding:18px 24px;margin-bottom:20px;">
+        <div style="font-size:18px;font-weight:700;color:var(--white);margin-bottom:6px;">More Show — a full-cycle event agency in the UAE</div>
+        <div style="font-size:14px;font-weight:400;color:rgba(255,255,255,0.75);line-height:1.6;">Operating since 2022. We organise events for children, adults, and corporate clients. We serve Russian-speaking, Arabic, and international audiences.</div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="card" style="text-align:center;padding:20px;">
+          <div class="card-num">5 462 381</div>
+          <div style="font-size:13px;font-weight:600;color:var(--gold);margin-top:2px;">AED</div>
+          <div class="card-label">Revenue 2024</div>
+        </div>
+        <div class="card" style="text-align:center;padding:20px;">
+          <div class="card-num">16 600+</div>
+          <div class="card-label" style="margin-top:6px;">Instagram followers</div>
+        </div>
+        <div class="card" style="text-align:center;padding:20px;">
+          <div class="card-num">10+</div>
+          <div class="card-label" style="margin-top:6px;">qualified leads per day</div>
+        </div>
+        <div class="card" style="text-align:center;padding:20px;">
+          <div class="card-num">150+</div>
+          <div class="card-label" style="margin-top:6px;">themed costumes</div>
+        </div>
+        <div class="card" style="text-align:center;padding:20px;">
+          <div class="card-num">18+</div>
+          <div class="card-label" style="margin-top:6px;">full-time staff</div>
+        </div>
+        <div class="card" style="text-align:center;padding:20px;">
+          <div class="card-num">7</div>
+          <div style="font-size:13px;font-weight:600;color:var(--gold);margin-top:2px;">Emirates</div>
+          <div class="card-label">coverage</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="brand-mark">
+      <img src="../dis/синий англ лого.png" alt="MORE SHOW">
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE VIDEO: PROMO ═══ -->
+  <div class="slide" id="slide-video">
+    <svg class="wave-bg" viewBox="0 0 1440 300" preserveAspectRatio="none">
+      <path d="M0,80 Q360,0 720,80 Q1080,160 1440,80 L1440,300 L0,300 Z" fill="white"/>
+    </svg>
+
+    <div class="slide-inner" style="align-items:center;justify-content:center;text-align:center;">
+      <div style="margin-bottom:16px;">
+        <div class="slide-title" style="text-align:center;">MORE SHOW</div>
+        <div class="slide-heading" style="font-size:28px;">Watch our <span style="color:var(--gold);">Promo Video</span></div>
+        <div class="gold-line" style="margin:16px auto 0;"></div>
+      </div>
+
+      <a href="https://youtu.be/vjmq7b5FrI0" target="_blank"
+         style="display:block;width:100%;max-width:860px;aspect-ratio:16/9;border-radius:16px;overflow:hidden;box-shadow:0 8px 60px rgba(0,0,0,0.5);border:2px solid rgba(235,181,80,0.4);position:relative;text-decoration:none;cursor:pointer;"
+         onmouseover="this.querySelector('.play-overlay').style.background='rgba(0,0,0,0.55)';this.querySelector('.play-btn').style.transform='scale(1.12)';"
+         onmouseout="this.querySelector('.play-overlay').style.background='rgba(0,0,0,0.35)';this.querySelector('.play-btn').style.transform='scale(1)';">
+        <!-- YouTube thumbnail -->
+        <img src="https://img.youtube.com/vi/vjmq7b5FrI0/maxresdefault.jpg"
+             onerror="this.src='https://img.youtube.com/vi/vjmq7b5FrI0/hqdefault.jpg'"
+             style="width:100%;height:100%;object-fit:cover;display:block;" alt="MORE SHOW Promo">
+        <!-- dark overlay -->
+        <div class="play-overlay" style="position:absolute;inset:0;background:rgba(0,0,0,0.35);transition:background 0.25s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;">
+          <!-- play button -->
+          <div class="play-btn" style="width:90px;height:90px;border-radius:50%;background:rgba(235,181,80,0.92);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 40px rgba(235,181,80,0.5);transition:transform 0.25s;">
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><polygon points="13,9 30,18 13,27" fill="#001a6e"/></svg>
+          </div>
+          <div style="font-size:15px;font-weight:700;color:#fff;letter-spacing:2px;text-transform:uppercase;text-shadow:0 2px 8px rgba(0,0,0,0.6);">Watch on YouTube</div>
+        </div>
+      </a>
+    </div>
+
+    <div class="brand-mark">
+      <img src="../dis/синий англ лого.png" alt="MORE SHOW">
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 3: SERVICES ═══ -->
+  <div class="slide" id="slide-3">
+    <svg class="wave-bg" viewBox="0 0 1440 300" preserveAspectRatio="none">
+      <path d="M0,100 Q360,20 720,100 Q1080,180 1440,100 L1440,300 L0,300 Z" fill="white"/>
+    </svg>
+
+    <div class="slide-inner">
+      <div class="slide-title">SLIDE 03</div>
+      <div class="slide-heading">Our Services</div>
+      <div class="gold-line"></div>
+
+      <div class="services-columns">
+        <div>
+          <div class="service-item">🎨 Décor and event styling</div>
+          <div class="service-item">🍽️ Catering</div>
+          <div class="service-item">🎭 Show programmes and entertainment</div>
+          <div class="service-item">🎤 Professional performers and hosts</div>
+          <div class="service-item">👗 Costume and character rental</div>
+          <div class="service-item">🎨 Masterclasses and workshops</div>
+        </div>
+        <div>
+          <div class="service-item">📸 Photo and video production</div>
+          <div class="service-item">💡 Lighting and sound equipment</div>
+          <div class="service-item">📍 Venue sourcing and booking</div>
+          <div class="service-item">🚗 Transfer and logistics</div>
+          <div class="service-item">🔑 Full turnkey event management</div>
+        </div>
+      </div>
+
+      <div class="services-tag">
+        Children's parties &nbsp;·&nbsp; Adult events &nbsp;·&nbsp; Corporate events &nbsp;·&nbsp; Themed parties
+      </div>
+    </div>
+
+    <div class="brand-mark">
+      <img src="../dis/синий англ лого.png" alt="MORE SHOW">
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 4: OUR WORK ═══ -->
+  <div class="slide" id="slide-gallery">
+    <svg class="wave-bg-top" viewBox="0 0 120 60" style="top:-10px;right:-40px;width:380px;height:190px;opacity:0.06;">
+      <path d="M5,15 Q20,5 35,15 Q50,25 65,15 Q80,5 95,15 Q110,25 120,15" stroke="white" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <path d="M5,30 Q20,20 35,30 Q50,40 65,30 Q80,20 95,30 Q110,40 120,30" stroke="white" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <path d="M5,45 Q20,35 35,45 Q50,55 65,45 Q80,35 95,45 Q110,55 120,45" stroke="white" stroke-width="4" fill="none" stroke-linecap="round"/>
+    </svg>
+
+    <div class="slide-inner">
+      <div class="slide-title">SLIDE 04</div>
+      <div class="slide-heading">Our Work</div>
+      <div class="gold-line"></div>
+
+      <div class="gallery-grid">
+        <div class="gallery-photo tall">
+          <img src="photo/Шоу-трансформеров-1.jpg" alt="More Show — transformer show">
+        </div>
+        <div class="gallery-photo">
+          <img src="photo/IMG_7375.jpg" alt="More Show — event">
+        </div>
+        <div class="gallery-photo">
+          <img src="photo/613034561_18007024217834143_8518939819022153365_n.jpg" alt="More Show">
+        </div>
+        <div class="gallery-photo">
+          <img src="photo/IMG_7421.jpg" alt="More Show — event">
+        </div>
+        <div class="gallery-photo">
+          <img src="photo/615147653_18007031264834143_2654303549144418358_n.jpg" alt="More Show">
+        </div>
+      </div>
+    </div>
+
+    <div class="brand-mark">
+      <img src="../dis/синий англ лого.png" alt="MORE SHOW">
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 4: UAE MARKET ═══ -->
+  <div class="slide" id="slide-4">
+    <svg class="wave-bg-top" viewBox="0 0 120 60" style="top:-20px;right:-40px;width:400px;height:200px;">
+      <path d="M5,15 Q20,5 35,15 Q50,25 65,15 Q80,5 95,15 Q110,25 120,15" stroke="white" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <path d="M5,30 Q20,20 35,30 Q50,40 65,30 Q80,20 95,30 Q110,40 120,30" stroke="white" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <path d="M5,45 Q20,35 35,45 Q50,55 65,45 Q80,35 95,45 Q110,55 120,45" stroke="white" stroke-width="4" fill="none" stroke-linecap="round"/>
+    </svg>
+
+    <div class="slide-inner">
+      <div class="slide-title">SLIDE 05</div>
+      <div class="slide-heading">UAE Market</div>
+      <div class="gold-line"></div>
+
+      <div class="market-grid">
+        <div class="market-card">
+          <div style="font-size:16px;font-weight:600;line-height:1.5;max-width:340px;">The UAE is one of the world's fastest-growing event markets</div>
+          <div class="market-num">01</div>
+        </div>
+        <div class="market-card">
+          <div style="font-size:16px;font-weight:600;line-height:1.5;max-width:340px;">7 Emirates — the company already operates across all of them</div>
+          <div class="market-num">02</div>
+        </div>
+        <div class="market-card">
+          <div style="font-size:16px;font-weight:600;line-height:1.5;max-width:340px;">A vast international diaspora: Russian-speaking, Arabic, and expats from Europe and Asia</div>
+          <div class="market-num">03</div>
+        </div>
+        <div class="market-card">
+          <div style="font-size:16px;font-weight:600;line-height:1.5;max-width:340px;">Neighbouring Gulf markets: Saudi Arabia, Qatar, Bahrain — the natural next step</div>
+          <div class="market-num">04</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="brand-mark">
+      <img src="../dis/синий англ лого.png" alt="MORE SHOW">
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 5: PHYSICAL ASSETS ═══ -->
+  <div class="slide" id="slide-5">
+    <svg class="wave-bg" viewBox="0 0 1440 300" preserveAspectRatio="none">
+      <path d="M0,120 Q360,40 720,120 Q1080,200 1440,120 L1440,300 L0,300 Z" fill="white"/>
+    </svg>
+
+    <div class="slide-inner">
+      <div class="slide-title">SLIDE 06</div>
+      <div class="slide-heading">Physical Assets</div>
+      <div class="gold-line"></div>
+      <div class="slide-subtitle">Transferred to the buyer:</div>
+
+      <div class="assets-grid">
+        <div class="asset-card wide">
+          <div class="asset-icon">🎭</div>
+          <div>
+            <div style="font-size:20px;font-weight:800;color:var(--gold);">150+</div>
+            <div class="asset-text">themed and seasonal costumes</div>
+          </div>
+        </div>
+        <div class="asset-card wide">
+          <div class="asset-icon">🎪</div>
+          <div>
+            <div class="asset-text" style="font-size:15px;font-weight:700;">Event props and equipment</div>
+          </div>
+        </div>
+        <div class="asset-card">
+          <div class="asset-icon">🎬</div>
+          <div class="asset-text">Proprietary developed show programmes</div>
+        </div>
+        <div class="asset-card">
+          <div class="asset-icon">📋</div>
+          <div class="asset-text">Ready-made catalogues and sales presentations</div>
+        </div>
+        <div class="asset-card">
+          <div class="asset-icon">🤝</div>
+          <div class="asset-text">Contractor and supplier database</div>
+        </div>
+        <div class="asset-card">
+          <div class="asset-icon">👥</div>
+          <div class="asset-text">Loyal client database</div>
+        </div>
+        <div class="asset-card wide" style="grid-column:span 2;">
+          <div class="asset-icon">🏠</div>
+          <div class="asset-text" style="font-size:15px;font-weight:700;">Ready infrastructure: villa + vehicle</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="brand-mark">
+      <img src="../dis/синий англ лого.png" alt="MORE SHOW">
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE CATALOGS: CATALOGUES AND PROGRAMMES ═══ -->
+  <div class="slide" id="slide-catalogs">
+    <!-- Background photo with overlay -->
+    <img src="photo/IMG_7375.jpg" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.3;z-index:0;pointer-events:none;" alt="">
+    <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,14,64,0.85) 0%,rgba(0,51,161,0.8) 100%);z-index:1;pointer-events:none;"></div>
+
+    <div class="slide-inner" style="position:relative;z-index:2;">
+      <div class="slide-title">SLIDE 07</div>
+      <div class="slide-heading">Catalogues and Programmes</div>
+      <div class="gold-line"></div>
+      <div class="slide-subtitle">All materials are ready for handover to the buyer — click to view</div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;flex:1;align-content:center;max-width:900px;">
+
+        <a href="https://drive.google.com/drive/folders/1mpOQBNKeaXJiJw_Tdmw5A89U1yO3yviJ?usp=share_link" target="_blank"
+           style="display:flex;flex-direction:column;gap:10px;background:rgba(10,61,158,0.6);border:2px solid var(--gold);border-radius:16px;padding:28px 30px;text-decoration:none;transition:background 0.2s,transform 0.2s;cursor:pointer;"
+           onmouseover="this.style.background='rgba(10,61,158,0.9)';this.style.transform='translateY(-3px)'"
+           onmouseout="this.style.background='rgba(10,61,158,0.6)';this.style.transform='translateY(0)'">
+          <div style="font-size:36px;">🎭</div>
+          <div style="font-size:17px;font-weight:800;color:var(--white);letter-spacing:0.5px;">Themed Costumes</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.6);">150+ costumes for events</div>
+          <div style="font-size:12px;font-weight:700;color:var(--gold);margin-top:4px;">Open catalogue →</div>
+        </a>
+
+        <a href="https://drive.google.com/file/d/10jnmtFGgRLYwZbI4faAZx0hkD2GATROj/view?usp=share_link" target="_blank"
+           style="display:flex;flex-direction:column;gap:10px;background:rgba(10,61,158,0.6);border:2px solid var(--gold);border-radius:16px;padding:28px 30px;text-decoration:none;transition:background 0.2s,transform 0.2s;cursor:pointer;"
+           onmouseover="this.style.background='rgba(10,61,158,0.9)';this.style.transform='translateY(-3px)'"
+           onmouseout="this.style.background='rgba(10,61,158,0.6)';this.style.transform='translateY(0)'">
+          <div style="font-size:36px;">🎄</div>
+          <div style="font-size:17px;font-weight:800;color:var(--white);letter-spacing:0.5px;">Holiday Costumes</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.6);">Seasonal costume collection</div>
+          <div style="font-size:12px;font-weight:700;color:var(--gold);margin-top:4px;">Open catalogue →</div>
+        </a>
+
+        <a href="https://drive.google.com/file/d/1o7a-eIQYd4CiE-ce7td7PbhMqrA2zUsc/view" target="_blank"
+           style="display:flex;flex-direction:column;gap:10px;background:rgba(10,61,158,0.6);border:2px solid var(--gold);border-radius:16px;padding:28px 30px;text-decoration:none;transition:background 0.2s,transform 0.2s;cursor:pointer;"
+           onmouseover="this.style.background='rgba(10,61,158,0.9)';this.style.transform='translateY(-3px)'"
+           onmouseout="this.style.background='rgba(10,61,158,0.6)';this.style.transform='translateY(0)'">
+          <div style="font-size:36px;">✨</div>
+          <div style="font-size:17px;font-weight:800;color:var(--white);letter-spacing:0.5px;">Show Programmes</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.6);">Ready scripts and programmes</div>
+          <div style="font-size:12px;font-weight:700;color:var(--gold);margin-top:4px;">Open catalogue →</div>
+        </a>
+
+        <a href="https://drive.google.com/file/d/1IIURo4BBKDlCaS5MBe25370OIt22ZptHI/view?pli=1" target="_blank"
+           style="display:flex;flex-direction:column;gap:10px;background:rgba(10,61,158,0.6);border:2px solid var(--gold);border-radius:16px;padding:28px 30px;text-decoration:none;transition:background 0.2s,transform 0.2s;cursor:pointer;"
+           onmouseover="this.style.background='rgba(10,61,158,0.9)';this.style.transform='translateY(-3px)'"
+           onmouseout="this.style.background='rgba(10,61,158,0.6)';this.style.transform='translateY(0)'">
+          <div style="font-size:36px;">🎅</div>
+          <div style="font-size:17px;font-weight:800;color:var(--white);letter-spacing:0.5px;">Holiday Shows</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.6);">Seasonal event programmes</div>
+          <div style="font-size:12px;font-weight:700;color:var(--gold);margin-top:4px;">Open catalogue →</div>
+        </a>
+
+      </div>
+    </div>
+
+    <div class="brand-mark">
+      <img src="../dis/синий англ лого.png" alt="MORE SHOW">
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 6: DIGITAL ASSETS ═══ -->
+  <div class="slide" id="slide-6">
+    <svg class="wave-bg-top" viewBox="0 0 120 60" style="top:-10px;right:-40px;width:380px;height:190px;opacity:0.06;">
+      <path d="M5,15 Q20,5 35,15 Q50,25 65,15 Q80,5 95,15 Q110,25 120,15" stroke="white" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <path d="M5,30 Q20,20 35,30 Q50,40 65,30 Q80,20 95,30 Q110,40 120,30" stroke="white" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <path d="M5,45 Q20,35 35,45 Q50,55 65,45 Q80,35 95,45 Q110,55 120,45" stroke="white" stroke-width="4" fill="none" stroke-linecap="round"/>
+    </svg>
+
+    <div class="slide-inner">
+      <div class="slide-title">SLIDE 08</div>
+      <div class="slide-heading">Digital and Legal Assets</div>
+      <div class="gold-line"></div>
+
+      <div class="digital-layout">
+
+        <!-- LEFT COLUMN -->
+        <div class="digital-left">
+
+          <div class="key-card-compact">
+            <div class="kc-icon">🔑</div>
+            <div>
+              <div class="kc-title">Active event activity licence in the UAE</div>
+              <div class="kc-desc">Obtaining a new licence today is a lengthy and costly process</div>
+            </div>
+          </div>
+
+          <div class="key-card-compact">
+            <div class="kc-icon">🏦</div>
+            <div>
+              <div class="kc-title">Business bank account with Emirates NBD</div>
+              <div class="kc-desc">Opening an account takes months and is frequently declined</div>
+            </div>
+          </div>
+
+          <div class="asset-links">
+            <div class="asset-link-item">
+              <div class="ali-label">🌐 Company website</div>
+              <a href="https://moreshow.events" target="_blank">moreshow.events</a>
+              <div class="ali-sub">Interactive quiz · SEO traffic · leads 24/7</div>
+            </div>
+
+            <div class="asset-link-item">
+              <div class="ali-label">📸 Instagram — 16 600+ followers</div>
+              <a href="https://www.instagram.com/moreshow_events" target="_blank">@moreshow_events</a>
+              <div class="ali-sub">486 posts · engaged audience · 10+ leads per day</div>
+            </div>
+
+            <div class="asset-link-plain">
+              <span>📣</span> Configured advertising on Google and Facebook
+            </div>
+
+            <div class="asset-link-plain">
+              <span>🎯</span> Ready sales funnels and CRM client database
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT COLUMN: Instagram mockup (hidden on mobile) -->
+        <div class="insta-mockup">
+          <div class="insta-top-bar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#262626" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+            moreshow_events
+          </div>
+          <div class="insta-header">
+            <div class="insta-profile-row">
+              <div class="insta-avatar">
+                <div class="insta-avatar-inner">MORE<br>SHOW</div>
+              </div>
+              <div class="insta-stats-row">
+                <div class="insta-stat"><strong>486</strong><span>posts</span></div>
+                <div class="insta-stat"><strong>16.6K</strong><span>followers</span></div>
+                <div class="insta-stat"><strong>14</strong><span>following</span></div>
+              </div>
+            </div>
+            <div class="insta-username-block">
+              <div class="insta-username">More Show Events Dubai 🇦🇪</div>
+              <div class="insta-bio-text">Event agency in Dubai &amp; all Emirates<br>More than 1000+ costumes · 15 years</div>
+              <div class="insta-bio-link">moreshow.events</div>
+            </div>
+          </div>
+          <div class="insta-grid">
+            <div class="insta-cell"><img src="photo/Истории%20•%20Instagram_files/386499421_17907678722834143_2783281892526928044_n.jpg" alt=""></div>
+            <div class="insta-cell"><img src="photo/Истории%20•%20Instagram_files/431141341_17928420122834143_4675488702306644189_n.jpg" alt=""></div>
+            <div class="insta-cell"><img src="photo/Истории%20•%20Instagram_files/606967499_18005401691834143_1277841897364920488_n.jpg" alt=""></div>
+            <div class="insta-cell"><img src="photo/Истории%20•%20Instagram_files/618033608_18007683074834143_1872048045819608355_n.jpg" alt=""></div>
+            <div class="insta-cell"><img src="photo/Истории%20•%20Instagram_files/640694311_18012746906834143_873247465065064961_n.jpg" alt=""></div>
+            <div class="insta-cell"><img src="photo/Истории%20•%20Instagram_files/652593652_18014281163834143_8129136103551476915_n.jpg" alt=""></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="brand-mark">
+      <img src="../dis/синий англ лого.png" alt="MORE SHOW">
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 7: TEAM ═══ -->
+  <div class="slide" id="slide-7">
+    <svg class="wave-bg" viewBox="0 0 1440 300" preserveAspectRatio="none">
+      <path d="M0,100 Q360,20 720,100 Q1080,180 1440,100 L1440,300 L0,300 Z" fill="white"/>
+    </svg>
+
+    <div class="slide-inner">
+      <div class="slide-title">SLIDE 09</div>
+      <div class="slide-heading">Team</div>
+      <div class="gold-line"></div>
+
+      <div class="team-columns" style="flex:1;">
+        <div style="display:flex;flex-direction:column;">
+          <div class="team-col-title">FULL-TIME STAFF</div>
+          <div class="team-list">
+            <div class="team-item">Entertainers / Animators (4)</div>
+            <div class="team-item">Costume Manager</div>
+            <div class="team-item">Creative Director</div>
+            <div class="team-item">Designer</div>
+            <div class="team-item">Head of Sales</div>
+            <div class="team-item">Sales Managers (8)</div>
+            <div class="team-item">Lead Generators (2)</div>
+            <div class="team-item">Marketing Specialists (3)</div>
+            <div class="team-item">SMM Specialists (2)</div>
+            <div class="team-item">Head of Finance</div>
+            <div class="team-item">Finance Manager</div>
+            <div class="team-item">Props Manager / Driver</div>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;">
+          <div class="team-col-title">FREELANCE POOL</div>
+          <div class="team-list">
+            <div class="team-item">Entertainers / Animators (15+)</div>
+            <div class="team-item">Show performers</div>
+            <div class="team-item">Accounting</div>
+            <div class="team-item">Legal</div>
+          </div>
+
+          <div class="team-note" style="margin-top:auto;">
+            The team stays on and will fully onboard the new owner.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="brand-mark">
+      <img src="../dis/синий англ лого.png" alt="MORE SHOW">
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 8: FINANCIALS ═══ -->
+  <div class="slide" id="slide-8">
+    <svg class="wave-bg-top" viewBox="0 0 120 60" style="top:-20px;right:-40px;width:400px;height:200px;">
+      <path d="M5,15 Q20,5 35,15 Q50,25 65,15 Q80,5 95,15 Q110,25 120,15" stroke="white" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <path d="M5,30 Q20,20 35,30 Q50,40 65,30 Q80,20 95,30 Q110,40 120,30" stroke="white" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <path d="M5,45 Q20,35 35,45 Q50,55 65,45 Q80,35 95,45 Q110,55 120,45" stroke="white" stroke-width="4" fill="none" stroke-linecap="round"/>
+    </svg>
+
+    <div class="slide-inner" style="padding:28px 40px 50px;">
+      <div class="slide-title">SLIDE 10</div>
+      <div class="slide-heading">Financial Analysis 2023–2025</div>
+      <div class="gold-line"></div>
+
+      <div class="finance-full-wrap">
+
+        <!-- 2023 -->
+        <table class="fft">
+          <tr class="fft-year"><td class="fft-label"></td><td colspan="5">2023</td></tr>
+          <tr class="fft-months">
+            <td class="fft-label"></td>
+            <td>September</td><td>October</td><td>November</td><td>December</td>
+            <td class="fft-total">Total</td>
+          </tr>
+          <tr class="fft-rev">
+            <td class="fft-label">Revenue (excl. VAT)</td>
+            <td>163 450</td><td>2 080 001</td><td>427 722</td><td>764 236</td>
+            <td class="fft-total">3 435 409</td>
+          </tr>
+          <tr class="fft-exp">
+            <td class="fft-label">Expenses</td>
+            <td>144 509</td><td>1 513 064</td><td>387 892</td><td>618 376</td>
+            <td class="fft-total">2 663 841</td>
+          </tr>
+          <tr class="fft-pnl">
+            <td class="fft-label">Net Profit</td>
+            <td class="pos">18 941</td><td class="pos">183 084</td><td class="pos">24 376</td><td class="pos">70 178</td>
+            <td class="fft-total pos">296 579</td>
+          </tr>
+        </table>
+
+        <!-- 2024 -->
+        <table class="fft">
+          <tr class="fft-year"><td class="fft-label"></td><td colspan="13">2024</td></tr>
+          <tr class="fft-months">
+            <td class="fft-label"></td>
+            <td>January</td><td>February</td><td>March</td><td>April</td><td>May</td><td>June</td>
+            <td>July</td><td>August</td><td>September</td><td>October</td><td>November</td><td>December</td>
+            <td class="fft-total">Total</td>
+          </tr>
+          <tr class="fft-rev">
+            <td class="fft-label">Revenue (excl. VAT)</td>
+            <td>657 351</td><td>517 098</td><td>502 012</td><td>574 197</td><td>471 707</td><td>462 261</td>
+            <td>54 020</td><td>140 758</td><td>296 552</td><td>379 281</td><td>474 267</td><td>932 877</td>
+            <td class="fft-total">5 462 381</td>
+          </tr>
+          <tr class="fft-exp">
+            <td class="fft-label">Expenses</td>
+            <td>613 835</td><td>422 989</td><td>448 450</td><td>513 996</td><td>428 631</td><td>413 212</td>
+            <td>199 512</td><td>240 649</td><td>311 846</td><td>333 947</td><td>435 906</td><td>751 439</td>
+            <td class="fft-total">5 114 411</td>
+          </tr>
+          <tr class="fft-pnl">
+            <td class="fft-label">Net Profit</td>
+            <td class="pos">26 618</td><td class="pos">31 989</td><td class="pos">29 192</td><td class="pos">37 573</td><td class="pos">24 969</td><td class="pos">27 369</td>
+            <td class="neg">−145 492</td><td class="neg">−99 890</td><td class="neg">−15 294</td><td class="pos">27 336</td><td class="pos">23 132</td><td class="pos">109 407</td>
+            <td class="fft-total pos">76 909</td>
+          </tr>
+        </table>
+
+        <!-- 2025 -->
+        <table class="fft">
+          <tr class="fft-year"><td class="fft-label"></td><td colspan="13">2025</td></tr>
+          <tr class="fft-months">
+            <td class="fft-label"></td>
+            <td>January</td><td>February</td><td>March</td><td>April</td><td>May</td><td>June</td>
+            <td>July</td><td>August</td><td>September</td><td>October</td><td>November</td><td>December</td>
+            <td class="fft-total">Total</td>
+          </tr>
+          <tr class="fft-rev">
+            <td class="fft-label">Revenue (excl. VAT)</td>
+            <td>534 656</td><td>372 800</td><td>394 461</td><td>465 801</td><td>255 734</td><td>238 708</td>
+            <td>80 570</td><td>169 485</td><td>285 391</td><td>372 432</td><td>374 737</td><td>416 008</td>
+            <td class="fft-total">3 960 783</td>
+          </tr>
+          <tr class="fft-exp">
+            <td class="fft-label">Expenses</td>
+            <td>497 230</td><td>371 987</td><td>397 277</td><td>426 147</td><td>277 602</td><td>295 839</td>
+            <td>212 159</td><td>287 610</td><td>289 470</td><td>387 452</td><td>254 766</td><td>419 494</td>
+            <td class="fft-total">4 117 033</td>
+          </tr>
+          <tr class="fft-pnl">
+            <td class="fft-label">Net Profit</td>
+            <td class="pos">22 564</td><td class="pos">812</td><td class="neg">−2 816</td><td class="pos">23 911</td><td class="neg">−19 681</td><td class="neg">−51 418</td>
+            <td class="neg">−88 165</td><td class="neg">−118 125</td><td class="neg">−4 079</td><td class="neg">−15 020</td><td class="neg">−46 123</td><td class="neg">−13 593</td>
+            <td class="fft-total neg">−311 732</td>
+          </tr>
+        </table>
+
+      </div>
+    </div>
+
+    <div class="brand-mark">
+      <img src="../dis/синий англ лого.png" alt="MORE SHOW">
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 9: GROWTH POTENTIAL ═══ -->
+  <div class="slide" id="slide-9">
+    <svg class="wave-bg" viewBox="0 0 1440 300" preserveAspectRatio="none">
+      <path d="M0,100 Q360,20 720,100 Q1080,180 1440,100 L1440,300 L0,300 Z" fill="white"/>
+    </svg>
+
+    <div class="slide-inner">
+      <div class="slide-title">SLIDE 11</div>
+      <div class="slide-heading">Growth Potential</div>
+      <div class="gold-line"></div>
+
+      <div class="potential-grid">
+        <div class="potential-card">
+          <div class="potential-num">1</div>
+          <div>
+            <div class="potential-title">Scaling to Arabic and English-speaking audiences</div>
+            <div class="potential-desc">a significantly larger market</div>
+          </div>
+        </div>
+        <div class="potential-card">
+          <div class="potential-num">2</div>
+          <div>
+            <div class="potential-title">Expanding presence in Abu Dhabi and other Emirates</div>
+            <div class="potential-desc">the foundation is already in place</div>
+          </div>
+        </div>
+        <div class="potential-card">
+          <div class="potential-num">3</div>
+          <div>
+            <div class="potential-title">Entry into Gulf markets</div>
+            <div class="potential-desc">Saudi Arabia, Qatar, Bahrain</div>
+          </div>
+        </div>
+        <div class="potential-card">
+          <div class="potential-num">4</div>
+          <div>
+            <div class="potential-title">B2B direction</div>
+            <div class="potential-desc">hotels, shopping malls, developers</div>
+          </div>
+        </div>
+        <div class="potential-card">
+          <div class="potential-num">5</div>
+          <div>
+            <div class="potential-title">Franchise</div>
+            <div class="potential-desc">scaling the model to other cities and countries</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="brand-mark">
+      <img src="../dis/синий англ лого.png" alt="MORE SHOW">
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 10: WHAT'S INCLUDED IN THE DEAL ═══ -->
+  <div class="slide" id="slide-10">
+    <svg class="wave-bg-top" viewBox="0 0 120 60" style="top:-20px;right:-40px;width:400px;height:200px;">
+      <path d="M5,15 Q20,5 35,15 Q50,25 65,15 Q80,5 95,15 Q110,25 120,15" stroke="white" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <path d="M5,30 Q20,20 35,30 Q50,40 65,30 Q80,20 95,30 Q110,40 120,30" stroke="white" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <path d="M5,45 Q20,35 35,45 Q50,55 65,45 Q80,35 95,45 Q110,55 120,45" stroke="white" stroke-width="4" fill="none" stroke-linecap="round"/>
+    </svg>
+
+    <div class="slide-inner">
+      <div class="slide-title">SLIDE 12</div>
+      <div class="slide-heading">What's Included in the Deal</div>
+      <div class="gold-line"></div>
+      <div class="slide-subtitle">The buyer receives a fully operational, ready-to-run business:</div>
+
+      <div class="deal-layout">
+        <div class="deal-list">
+          <div class="deal-item"><span class="check">✅</span> Legal entity registered in the UAE</div>
+          <div class="deal-item"><span class="check">✅</span> Active event activity licence</div>
+          <div class="deal-item"><span class="check">✅</span> Emirates NBD business bank account</div>
+          <div class="deal-item"><span class="check">✅</span> Team of 18+ staff + freelance pool</div>
+          <div class="deal-item"><span class="check">✅</span> 150+ costumes, props, and equipment</div>
+          <div class="deal-item"><span class="check">✅</span> Website, Instagram, configured advertising</div>
+          <div class="deal-item"><span class="check">✅</span> Client database, partner network, show programmes</div>
+        </div>
+
+        <div class="price-card">
+          <div class="price-label">Asking Price</div>
+          <div class="price-value">800 000</div>
+          <div class="price-currency">AED</div>
+          <div style="width:50px;height:2px;background:var(--gold);margin:0 auto 16px;border-radius:2px;"></div>
+          <div class="price-note">
+            Open to negotiation<br>
+            Reasonable offers considered
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="brand-mark">
+      <img src="../dis/синий англ лого.png" alt="MORE SHOW">
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 11: CONTACTS ═══ -->
+  <div class="slide" id="slide-11">
+    <!-- Full background wave pattern (same as cover) -->
+    <svg style="position:absolute;width:100%;height:100%;top:0;left:0;opacity:0.07;pointer-events:none;" viewBox="0 0 1440 810" preserveAspectRatio="xMidYMid slice">
+      <path d="M0,120 Q120,60 240,120 Q360,180 480,120 Q600,60 720,120 Q840,180 960,120 Q1080,60 1200,120 Q1320,180 1440,120" stroke="white" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <path d="M0,200 Q120,140 240,200 Q360,260 480,200 Q600,140 720,200 Q840,260 960,200 Q1080,140 1200,200 Q1320,260 1440,200" stroke="white" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <path d="M0,280 Q120,220 240,280 Q360,340 480,280 Q600,220 720,280 Q840,340 960,280 Q1080,220 1200,280 Q1320,340 1440,280" stroke="white" stroke-width="5" fill="none" stroke-linecap="round"/>
+      <path d="M0,420 Q180,340 360,420 Q540,500 720,420 Q900,340 1080,420 Q1260,500 1440,420" stroke="white" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <path d="M0,500 Q180,420 360,500 Q540,580 720,500 Q900,420 1080,500 Q1260,580 1440,500" stroke="white" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <path d="M0,580 Q180,500 360,580 Q540,660 720,580 Q900,500 1080,580 Q1260,660 1440,580" stroke="white" stroke-width="4" fill="none" stroke-linecap="round"/>
+    </svg>
+
+    <div class="slide-inner" style="padding:0;">
+      <div class="contact-center">
+        <svg class="contact-wave" viewBox="0 0 120 60">
+          <path d="M5,15 Q20,5 35,15 Q50,25 65,15 Q80,5 95,15 Q110,25 120,15" stroke="#EBB550" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+          <path d="M5,30 Q20,20 35,30 Q50,40 65,30 Q80,20 95,30 Q110,40 120,30" stroke="#EBB550" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+          <path d="M5,45 Q20,35 35,45 Q50,55 65,45 Q80,35 95,45 Q110,55 120,45" stroke="#EBB550" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+        </svg>
+
+        <div class="contact-logo">MORE SHOW</div>
+        <div class="contact-dubai">DUBAI</div>
+
+        <div class="contact-links">
+          <div class="contact-item">
+            <span>🌐</span> moreshow.events
+          </div>
+          <div class="contact-item">
+            <span>📸</span> @moreshow_events
+          </div>
+          <div class="contact-item">
+            <span>📧</span> vlada@more-show.com
+          </div>
+          <div class="contact-item">
+            <span>💬</span> WhatsApp: +971 58 599 8938
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- bottom wave -->
+    <svg class="wave-bottom" viewBox="0 0 1440 120" preserveAspectRatio="none">
+      <path d="M0,60 Q360,0 720,60 Q1080,120 1440,60 L1440,120 L0,120 Z" fill="white"/>
+    </svg>
+  </div>
+
+</div><!-- /slideshow -->
+
+<!-- Navigation -->
+<button class="nav-btn" id="btn-prev" aria-label="Previous">&#8592;</button>
+<button class="nav-btn" id="btn-next" aria-label="Next">&#8594;</button>
+<div class="slide-counter" id="slide-counter">1 / 12</div>
+
+<!-- Dots navigation (shown on mobile) -->
+<div class="dots-nav" id="dots-nav"></div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const counter = document.getElementById('slide-counter');
+  const dotsNav = document.getElementById('dots-nav');
+  const total = slides.length;
+  let current = 0;
+
+  // Build dots
+  slides.forEach((_, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'dot' + (i === 0 ? ' active' : '');
+    dot.addEventListener('click', () => goTo(i));
+    dotsNav.appendChild(dot);
+  });
+
+  function updateDots() {
+    document.querySelectorAll('.dot').forEach((d, i) => {
+      d.classList.toggle('active', i === current);
+    });
+  }
+
+  function goTo(n) {
+    slides[current].classList.remove('active');
+    // Reset scroll position of previous slide
+    slides[current].scrollTop = 0;
+    current = (n + total) % total;
+    slides[current].classList.add('active');
+    counter.textContent = (current + 1) + ' / ' + total;
+    updateDots();
+  }
+
+  document.getElementById('btn-prev').addEventListener('click', () => goTo(current - 1));
+  document.getElementById('btn-next').addEventListener('click', () => goTo(current + 1));
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') goTo(current + 1);
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   goTo(current - 1);
+  });
+
+  // Touch / swipe support — only navigate if not scrolling vertically
+  let touchStartX = 0;
+  let touchStartY = 0;
+
+  document.addEventListener('touchstart', e => {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+
+  document.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    const dy = e.changedTouches[0].clientY - touchStartY;
+    // Only trigger slide change if horizontal swipe dominates
+    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
+      goTo(dx < 0 ? current + 1 : current - 1);
+    }
+  }, { passive: true });
+</script>
+</body>
+</html>
